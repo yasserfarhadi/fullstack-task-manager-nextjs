@@ -27,7 +27,7 @@ const CreateTaskForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      important: true,
+      important: false,
     },
   });
 
@@ -84,7 +84,7 @@ const CreateTaskForm = () => {
             name="important"
             disabled={pending}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex justify-between items-center">
                 <FormLabel>Is it important?</FormLabel>
                 <FormControl>
                   <Checkbox

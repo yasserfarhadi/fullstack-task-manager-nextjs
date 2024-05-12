@@ -1,29 +1,21 @@
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
-// import { useMediaQuery } from '@/hooks/use-media-query';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from '@/components/ui/drawer';
-// import { Input } from '@/components/ui/input';
-// import { Label } from '@/components/ui/label';
 import useWidth from '@/hooks/useWidth';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   children: React.ReactNode;
@@ -40,44 +32,51 @@ export function DrawerDialog({
   open,
   setOpen,
 }: Props) {
-  // const [open, setOpen] = React.useState(false);
-  const isDesktop = useWidth(1024);
+  const isDesktop = useWidth(768);
+  const router = useRouter();
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Edit Profile</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{dialogTitle}</DialogTitle>
-            <DialogDescription>{dialogDescription}</DialogDescription>
-          </DialogHeader>
-          {/* <ProfileForm /> */}
-          {children}
-        </DialogContent>
+      <Dialog
+        open={open}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpen(false);
+            router.back();
+          }
+        }}
+      >
+        <div className="max-w-[400px] w-[90%] mx-auto">
+          <DialogContent className="sm:max-w-[425px] bg-primary text-secondary p-10">
+            <DialogHeader>
+              <DialogTitle>{dialogTitle}</DialogTitle>
+              <DialogDescription>{dialogDescription}</DialogDescription>
+            </DialogHeader>
+            {children}
+          </DialogContent>
+        </div>
       </Dialog>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>{dialogTitle}</DrawerTitle>
-          <DrawerDescription>{dialogDescription}</DrawerDescription>
-        </DrawerHeader>
-        {/* <ProfileForm className="px-4" /> */}
-        {children}
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
+    <Drawer
+      open={open}
+      onOpenChange={(open) => {
+        if (!open) {
+          setOpen(false);
+          router.back();
+        }
+      }}
+    >
+      <DrawerContent className="bg-primary text-secondary p-10">
+        <div className="max-w-[400px] w-[90%] mx-auto">
+          <DrawerHeader className="text-left px-0 pt-5">
+            <DrawerTitle>{dialogTitle}</DrawerTitle>
+            <DrawerDescription>{dialogDescription}</DrawerDescription>
+          </DrawerHeader>
+          {children}
+        </div>
       </DrawerContent>
     </Drawer>
   );

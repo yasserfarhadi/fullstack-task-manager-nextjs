@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '../ui/badge';
+import Link from 'next/link';
 
 const notifications = [
   {
@@ -86,7 +87,9 @@ export function TaskCard({
           {completed ? 'Completed' : 'Incomplete'}
         </Badge>
         <Button className="p-0 h-auto" disabled={completed}>
-          <Pencil2Icon className="h-4 w-4" />
+          <Link href={`edit/${32112}`}>
+            <Pencil2Icon className="h-4 w-4" />
+          </Link>
         </Button>
         <Button className="p-0 h-auto">
           <TrashIcon className="h-4 w-4" />
