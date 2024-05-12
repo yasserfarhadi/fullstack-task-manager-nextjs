@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import {
   BellIcon,
   CheckIcon,
@@ -21,21 +23,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
-
-const notifications = [
-  {
-    title: 'Your call has been confirmed.',
-    description: '1 hour ago',
-  },
-  {
-    title: 'You have a new message!',
-    description: '1 hour ago',
-  },
-  {
-    title: 'Your subscription is expiring soon!',
-    description: '2 hours ago',
-  },
-];
+import { deleteTask, editTask } from '@/actions/task';
 
 type CustomProps = {
   title: string;
@@ -49,14 +37,32 @@ type CardProps = React.ComponentProps<typeof Card> & CustomProps;
 
 export function TaskCard({
   className,
+  createdAt,
   title,
   description,
-  createdAt,
   completed,
-  important,
+  important = false,
   id,
   ...props
 }: CardProps) {
+  const [pending, startTransintion] = React.useTransition();
+
+  async function handleCompletedToggle(completed: boolean) {
+    startTransintion(async () => {
+      const data = await editTask({
+        title,
+        description,
+        completed,
+        important,
+        id,
+      });
+    });
+  }
+  async function handleDeleteTask() {
+    startTransintion(async () => {
+      const data = await deleteTask(id);
+    });
+  }
   return (
     <Card
       className={cn('w-[280px] bg-primary text-secondary', className)}
@@ -72,6 +78,7 @@ export function TaskCard({
           <Switch
             defaultChecked={completed}
             className="data-[state=checked]:bg-green-500"
+            onCheckedChange={handleCompletedToggle}
           ></Switch>
         </CardTitle>
         <CardDescription className="truncate">{description}</CardDescription>
@@ -87,11 +94,11 @@ export function TaskCard({
           {completed ? 'Completed' : 'Incomplete'}
         </Badge>
         <Button className="p-0 h-auto" disabled={completed}>
-          <Link href={`edit/${32112}`}>
+          <Link href={`edit/${id}`}>
             <Pencil2Icon className="h-4 w-4" />
           </Link>
         </Button>
-        <Button className="p-0 h-auto">
+        <Button className="p-0 h-auto" onClick={handleDeleteTask}>
           <TrashIcon className="h-4 w-4" />
         </Button>
       </CardFooter>

@@ -4,7 +4,11 @@ import { CreateTask } from './create-new';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 
-export const TaskList = () => {
+interface Props {
+  tasks: Task[];
+}
+
+export const TaskList = ({ tasks }: Props) => {
   const filter = 'all';
   return (
     <div className="border px-10 py-7 rounded-lg flex-grow">
@@ -37,14 +41,19 @@ export const TaskList = () => {
       </Button>
 
       <div className="grid justify-center mt-10 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        <TaskCard
-          title="BBK"
-          description="LOUDLOUDLOUDLOUDLOUDLOUD"
-          completed={false}
-          createdAt={new Date().toLocaleDateString()}
-          id="awd"
-        />
-        <TaskCard
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            title={task.title}
+            description={task.description}
+            completed={task.completed}
+            createdAt={new Date().toLocaleDateString()}
+            important={task.important}
+            id={task.id}
+          />
+        ))}
+
+        {/* <TaskCard
           title="BBK"
           description="LOUDLOUDLOUDLOUDLOUDLOUD"
           completed={true}
@@ -72,7 +81,7 @@ export const TaskList = () => {
           completed={false}
           createdAt={new Date().toLocaleDateString()}
           id="awd"
-        />
+        /> */}
         <CreateTask />
       </div>
     </div>

@@ -69,7 +69,7 @@ export function DrawerDialog({
         }
       }}
     >
-      <DrawerContent className="bg-primary text-secondary p-10">
+      <DrawerContent className="bg-primary text-secondary p-10 rounded-none border-0 border-t">
         <div className="max-w-[400px] w-[90%] mx-auto">
           <DrawerHeader className="text-left px-0 pt-5">
             <DrawerTitle>{dialogTitle}</DrawerTitle>

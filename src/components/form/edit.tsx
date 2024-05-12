@@ -19,14 +19,12 @@ import FormError from './form-error';
 // import { login } from '@/actions/login';
 import { Textarea } from '../ui/textarea';
 import { Checkbox } from '../ui/checkbox';
+import { Task } from '@prisma/client';
+import { editTask } from '@/actions/task';
+import { useRouter } from 'next/navigation';
 
-interface Props {
-  title: string;
-  description: string;
-  important: boolean;
-}
-
-const EditTaskForm = ({ description, important, title }: Props) => {
+const EditTaskForm = ({ description, important, title, id }: Task) => {
+  const router = useRouter();
   const [pending, startTransintion] = React.useTransition();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -38,11 +36,14 @@ const EditTaskForm = ({ description, important, title }: Props) => {
   });
 
   async function handleSubmit(values: z.infer<typeof taskSchema>) {
-    console.log(values);
     startTransintion(async () => {
       form.clearErrors();
-      // const data = await login(values);
-      // form.setError('root', { message: data?.error });
+      const data = await editTask({ ...values, id });
+
+      form.setError('root', { message: data?.error });
+      if (!data?.error) {
+        router.back();
+      }
     });
   }
 

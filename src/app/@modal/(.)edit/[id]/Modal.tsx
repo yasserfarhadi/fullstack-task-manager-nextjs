@@ -2,9 +2,10 @@
 
 import EditTaskForm from '@/components/form/edit';
 import { DrawerDialog } from '@/components/modal-drawer/modal';
+import { Task } from '@prisma/client';
 import React from 'react';
 
-const Modal = () => {
+const Modal = ({ task }: { task: Task }) => {
   const [open, setOpen] = React.useState(true);
 
   return (
@@ -14,11 +15,7 @@ const Modal = () => {
       open={open}
       setOpen={setOpen}
     >
-      <EditTaskForm
-        title="123"
-        description="qweqwexddddddddddqwe"
-        important={true}
-      />
+      <EditTaskForm {...task} />
     </DrawerDialog>
   );
 };

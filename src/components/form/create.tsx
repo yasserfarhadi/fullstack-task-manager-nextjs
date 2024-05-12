@@ -16,11 +16,13 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import FormError from './form-error';
-// import { login } from '@/actions/login';
 import { Textarea } from '../ui/textarea';
 import { Checkbox } from '../ui/checkbox';
+import { createTask } from '@/actions/task';
+import { useRouter } from 'next/navigation';
 
 const CreateTaskForm = () => {
+  const router = useRouter();
   const [pending, startTransintion] = React.useTransition();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -32,11 +34,13 @@ const CreateTaskForm = () => {
   });
 
   async function handleSubmit(values: z.infer<typeof taskSchema>) {
-    console.log(values);
     startTransintion(async () => {
       form.clearErrors();
-      // const data = await login(values);
-      // form.setError('root', { message: data?.error });
+      const data = await createTask(values);
+      form.setError('root', { message: data?.error });
+      if (!data?.error) {
+        router.back();
+      }
     });
   }
 
