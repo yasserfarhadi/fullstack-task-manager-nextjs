@@ -5,16 +5,16 @@ import Image from 'next/image';
 import { getAllTasks } from '@/data';
 
 export default async function Home({
-  params: { filter },
+  searchParams: { filter },
 }: {
-  params: { filter: string };
+  searchParams: { filter: string };
 }) {
   const tasks = await getAllTasks(filter);
   return (
     <main className="w-full max-w-full min-h-full">
       <div className="container flex py-5 md:py-10 gap-10 h-full">
         <Sidebar />
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} filter={filter || 'all'} />
       </div>
     </main>
   );

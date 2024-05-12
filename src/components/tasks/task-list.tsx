@@ -3,13 +3,14 @@ import { TaskCard } from './task-card';
 import { CreateTask } from './create-new';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { Task } from '@prisma/client';
 
 interface Props {
   tasks: Task[];
+  filter: string;
 }
 
-export const TaskList = ({ tasks }: Props) => {
-  const filter = 'all';
+export const TaskList = ({ tasks, filter }: Props) => {
   return (
     <div className="border px-10 py-7 rounded-lg flex-grow">
       <div className="flex justify-between">
@@ -52,36 +53,6 @@ export const TaskList = ({ tasks }: Props) => {
             id={task.id}
           />
         ))}
-
-        {/* <TaskCard
-          title="BBK"
-          description="LOUDLOUDLOUDLOUDLOUDLOUD"
-          completed={true}
-          createdAt={new Date().toLocaleDateString()}
-          id="awd"
-          important
-        />
-        <TaskCard
-          title="BBK"
-          description="LOUDLOUDLOUDLOUDLOUDLOUD"
-          completed={false}
-          createdAt={new Date().toLocaleDateString()}
-          id="awd"
-        />
-        <TaskCard
-          title="BBK"
-          description="LOUDLOUDLOUDLOUDLOUDLOUD"
-          completed={false}
-          createdAt={new Date().toLocaleDateString()}
-          id="awd"
-        />
-        <TaskCard
-          title="BBK"
-          description="LOUDLOUDLOUDLOUDLOUDLOUD"
-          completed={false}
-          createdAt={new Date().toLocaleDateString()}
-          id="awd"
-        /> */}
         <CreateTask />
       </div>
     </div>

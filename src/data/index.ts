@@ -1,11 +1,12 @@
 import { prisma } from '@/lib/db';
 
 export const getAllTasks = async (filter?: string) => {
+  console.log(filter);
   try {
     const query: any = {};
     if (filter) {
       switch (filter) {
-        case 'compeleted':
+        case 'completed':
           query.where = {
             completed: true,
           };

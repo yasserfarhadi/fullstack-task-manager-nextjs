@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { DrawerClose } from '../ui/drawer';
 
 interface Props {
@@ -27,9 +27,21 @@ const filters = [
 ];
 
 const SidebarContent = ({ inDrawer }: Props) => {
-  let filter = 'all';
   const Wrapper = inDrawer ? DrawerClose : React.Fragment;
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const filter = searchParams.get('filter') || 'all';
+
+  const createQueryString = React.useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
   return (
     <div className="flex flex-col gap-5 mt-20 px-10">
       <div className="space-y-2 mb-10">
@@ -44,6 +56,11 @@ const SidebarContent = ({ inDrawer }: Props) => {
             variant="outline"
             className="text-secondary w-full bg-primary"
             disabled={filter === item.type}
+            onClick={() => {
+              router.push(
+                pathname + '?' + createQueryString('filter', item.type)
+              );
+            }}
           >
             {item.name}
           </Button>
