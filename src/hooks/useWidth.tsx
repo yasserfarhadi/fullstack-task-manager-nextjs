@@ -1,6 +1,7 @@
 import React from 'react';
 
 function isPassedThreshold(threshold: number) {
+  if (typeof window === 'undefined') return true;
   return window.innerWidth >= threshold;
 }
 

@@ -51,7 +51,7 @@ const SidebarContent = ({ inDrawer }: Props) => {
         </h3>
       </div>
       {filters.map((item, i) => (
-        <Wrapper key={i} disabled={filter === item.type}>
+        <Wrapper key={i}>
           <Button
             variant="outline"
             className="text-secondary w-full bg-primary"
